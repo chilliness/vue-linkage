@@ -1,51 +1,72 @@
-## 仿iOS省市区三级联动
+## 多级联动
+
+> 亮点
 
 ``` bash
-A Vue.js project
+1、原生JavaScript实现，无须引入第三方
 
-本实例是基于vue 2.0和mint-ui 2.0仿iOS省市区三级联动
+2、支持初始化数据，满足初始化需求
+
+3、所有组件均支持全局引入和组件内引入
+
+4、支持自定义数据，想要几列，由你做主
+
+5、解决苹果手机橡皮筋效果带来的负面影响
+
+6、已实现『时间、日期、省市区』联动组件，方便直接使用和个性化定制参考
+
+7、提供『初始化、取消、确定、滚动结束』事件回调，并返回带有字段说明的对象
+
+8、其他亮点，不再一一罗列，请自行发掘
 ```
 
 > 效果
 
-![Image text](https://raw.githubusercontent.com/chilliness/linkage/master/src/assets/demo.gif)
+![最终效果](/demo/demo.gif)
 
 > 注意事项
 
 ``` bash
-1、所用数据和组件均在src/components/linkage文件夹
+1、CSS代码使用Scss编写
 
-2、本实例是用vue-cli提供的webpack模板构建
+2、本组件是针对移动端开发的，主要解决『移动端』联动问题
 
-3、CSS代码使用了sass编写，JS代码部分使用了ES6
+3、所有数据和组件均在src/components文件夹下，以文件夹划分
 
-4、如果你想直接使用，请确保你安装了mint-ui、node-sass、sass-loader及babel
+4、基础组件为linkageBase，可根据此组件个性化定制符合需求的组件
 
-5、使用的时候请在main.js中加入下面三行代码
+5、如需使用本项目提供的『时间、日期、省市区』联动组件，请参考本项目代码
 
-import 'mint-ui/lib/style.css';
-import {Picker} from 'mint-ui';
-Vue.component(Picker.name, Picker);
+6、个性化定制时，请在『事件回调内容bool为true』时再做处理，不包含初始化事件
+
+7、初始化事件回调『只发生在有初始化且初始化成功的前提下』，并返回带有字段说明的对象
+
+8、本组件列数是根据list传入的二维数组长度决定的，请务必保证『二维数组list的合法性』
+
+9、由于『显示内容和获取结果』是取子项的val属性，请务必保证『二维数组list每一项的子项为带有val属性的对象』
 ```
 
-> 最后一句
-
-虽然[mint-ui](http://mint-ui.github.io/#!/zh-cn)功能强大，但是官方文档做的不太友好，希望官方能借鉴一下[element ui](http://element.eleme.io/#/zh-CN)的文档，最后感谢饿了么团队的无私奉献。
-
-## Build Setup
-
-``` bash
-# install dependencies
+## Project setup
+```
 npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
