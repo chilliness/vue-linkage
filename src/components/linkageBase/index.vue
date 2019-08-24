@@ -7,8 +7,8 @@
         <div class="btn btn-submit" @click="handleConfirm">{{confirmText}}</div>
       </div>
       <div class="list-outer">
-        <div class="list-inner">
-          <div class="list-box" :style="{width: 100 / list.length + '%'}" v-for="(item, index) in list" :key="index" @touchstart="handleStart(index, $event)" @touchmove="handleMove" @touchend="handleEnd" @touchcancel="handleEnd" ref="listBox">
+        <div class="list-inner" ref="listInner">
+          <div class="list-box" :style="{width: 100 / list.length + '%'}" v-for="(item, index) in list" :key="index" @touchstart="handleStart(index, $event)" @touchmove="handleMove" @touchend="handleEnd" @touchcancel="handleEnd">
             <div class="item-box" :data-val="_item.val" v-for="(_item, _index) in item" :key="index + '-' +_index">{{_item.val}}</div>
           </div>
         </div>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { css, MTween } from './js/m.Tween.js';
+import { css, MTween } from './js/MTween.js';
 let touch = { lastTime: 0, interval: 300 };
 
 export default {
@@ -61,7 +61,10 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(this.handleInitPos);
+    setTimeout(() => this.handleInitPos(), 60);
+  },
+  beforeDestroy() {
+    document.removeEventListener('touchmove', this.handlePrevent);
   },
   methods: {
     handleInitPos() {
@@ -69,36 +72,31 @@ export default {
         return;
       }
 
-      let aPos = [];
-      this.list.map((item, index) => {
-        aPos.push(item.findIndex(item => item.val === this.initVal[index]));
-      });
+      let aPos = this.list.map((item, index) =>
+        item.findIndex(obj => obj.val === this.initVal[index])
+      );
 
       if (aPos.includes(-1)) {
-        return console.log(this.initVal, '初始化失败，请核对数据有效性');
+        throw Error('初始化失败，请核对数据有效性');
       }
 
-      let timerOut = setTimeout(() => {
-        clearTimeout(timerOut);
-        this.$refs.listBox.forEach((item, index) => {
-          let val = -css(item.children[0], 'height') * aPos[index];
-          css(item, 'translateY', val);
-        });
+      [...this.$refs.listInner.children].forEach((item, index) => {
+        let val = -css(item.children[0], 'height') * aPos[index];
+        css(item, 'translateY', val);
+      });
 
-        this.$emit('init', { index: aPos, _: 'index-初始化索引' });
-      }, 60);
+      this.$emit('init', { index: aPos, _: 'index-初始化索引' });
     },
     handleCssPos() {
       if (!this.linkageVal.length) {
         return;
       }
 
-      let aPos = [];
-      this.list.map((item, index) => {
-        aPos.push(item.findIndex(item => item.val === this.linkageVal[index]));
-      });
+      let aPos = this.list.map((item, index) =>
+        item.findIndex(obj => obj.val === this.linkageVal[index])
+      );
 
-      this.$refs.listBox.forEach((item, index) => {
+      [...this.$refs.listInner.children].forEach((item, index) => {
         let val = aPos[index];
         if (val !== -1) {
           css(item, 'translateY', -css(item.children[0], 'height') * val);
@@ -114,7 +112,7 @@ export default {
       touch.init = true;
       touch.lastTime = now;
       touch.elIndex = elIndex;
-      touch.el = this.$refs.listBox[elIndex];
+      touch.el = this.$refs.listInner.children[elIndex];
       touch.diffY = 0;
       touch.startY = e.changedTouches[0].pageY;
       touch.oldVal = css(touch.el, 'translateY');
@@ -171,7 +169,7 @@ export default {
         _: 'bool-是否正常,index-最终索引,meta-最终数据,val-最终结果'
       };
 
-      this.$refs.listBox.forEach((item, index) => {
+      [...this.$refs.listInner.children].forEach((item, index) => {
         let msg = '警告:心急吃不了热豆腐';
         let children = item.children;
         let nowIndex = Math.abs(
@@ -211,9 +209,7 @@ export default {
       let type = val ? 'addEventListener' : 'removeEventListener';
       document[type]('touchmove', this.handlePrevent, { passive: false });
     },
-    linkageVal() {
-      this.$nextTick(this.handleCssPos);
-    }
+    linkageVal: 'handleCssPos'
   }
 };
 </script>

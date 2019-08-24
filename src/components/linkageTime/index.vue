@@ -3,8 +3,11 @@
 </template>
 
 <script>
+import LinkageBase from '../linkageBase';
+
 export default {
   name: 'LinkageTime',
+  components: { LinkageBase },
   props: {
     initVal: {
       type: Array,
@@ -26,14 +29,14 @@ export default {
     }
   },
   data() {
-    let hourList = Array.from(Array(24).keys(), num => ({
-      val: String(num).padStart(2, '0')
+    let hourList = [...''.padEnd(24)].map((v, i) => ({
+      val: String(i).padStart(2, '0')
     }));
-    let minuteList = Array.from(Array(60).keys(), num => ({
-      val: String(num).padStart(2, '0')
+    let minuteList = [...''.padEnd(60)].map((v, i) => ({
+      val: String(i).padStart(2, '0')
     }));
-    let secondList = Array.from(Array(60).keys(), num => ({
-      val: String(num).padStart(2, '0')
+    let secondList = [...''.padEnd(60)].map((v, i) => ({
+      val: String(i).padStart(2, '0')
     }));
 
     return {

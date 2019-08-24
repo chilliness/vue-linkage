@@ -3,8 +3,11 @@
 </template>
 
 <script>
+import LinkageBase from '../linkageBase';
+
 export default {
   name: 'LinkageDate',
+  components: { LinkageBase },
   props: {
     initVal: {
       type: Array,
@@ -34,11 +37,11 @@ export default {
       yearList.push({ val: String(+year + i) });
     }
 
-    let monthList = Array.from(Array(12).keys(), num => ({
-      val: String(num + 1).padStart(2, '0')
+    let monthList = [...''.padEnd(12)].map((v, i) => ({
+      val: String(i + 1).padStart(2, '0')
     }));
-    let dateList = Array.from(Array(31).keys(), num => ({
-      val: String(num + 1).padStart(2, '0')
+    let dateList = [...''.padEnd(31)].map((v, i) => ({
+      val: String(i + 1).padStart(2, '0')
     }));
 
     return {
@@ -72,8 +75,8 @@ export default {
       }
 
       let days = new Date(year, month, 0).getDate();
-      let dateList = Array.from(Array(days).keys(), num => ({
-        val: String(num + 1).padStart(2, '0')
+      let dateList = [...''.padEnd(days)].map((v, i) => ({
+        val: String(i + 1).padStart(2, '0')
       }));
       this.list = [this.list[0], this.list[1], dateList];
     },
@@ -94,8 +97,8 @@ export default {
 
       if (which !== 2) {
         let days = new Date(val[0], val[1], 0).getDate();
-        let dateList = Array.from(Array(days).keys(), num => ({
-          val: String(num + 1).padStart(2, '0')
+        let dateList = [...''.padEnd(days)].map((v, i) => ({
+          val: String(i + 1).padStart(2, '0')
         }));
         this.list = [this.list[0], this.list[1], dateList];
 

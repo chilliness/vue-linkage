@@ -3,10 +3,12 @@
 </template>
 
 <script>
+import LinkageBase from '../linkageBase';
 import { provList, cityList, areaList } from './js/metadata.js';
 
 export default {
   name: 'LinkageAddr',
+  components: { LinkageBase },
   props: {
     initVal: {
       type: Array,
