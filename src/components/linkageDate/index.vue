@@ -1,5 +1,5 @@
 <template>
-  <LinkageBase :cancelText="cancelText" :confirmText="confirmText" :list="list" :initVal="initVal" :linkageVal="linkageVal" @cancel="handleCancel" @confirm="handleConfirm" @over="handleOver" @init="handleInit" :isShow="isShow"></LinkageBase>
+  <LinkageBase :cancelText="cancelText" :confirmText="confirmText" :list="list" :initVal="initVal" :linkageVal="linkageVal" @emitCancel="handleCancel" @emitConfirm="handleConfirm" @emitOver="handleOver" @emitInit="handleInit" :isShow="isShow"></LinkageBase>
 </template>
 
 <script>
@@ -37,12 +37,16 @@ export default {
       yearList.push({ val: String(+year + i) });
     }
 
-    let monthList = [...''.padEnd(12)].map((v, i) => ({
-      val: String(i + 1).padStart(2, '0')
-    }));
-    let dateList = [...''.padEnd(31)].map((v, i) => ({
-      val: String(i + 1).padStart(2, '0')
-    }));
+    let monthList = Array(12)
+      .fill('')
+      .map((v, i) => ({
+        val: String(i + 1).padStart(2, '0')
+      }));
+    let dateList = Array(31)
+      .fill('')
+      .map((v, i) => ({
+        val: String(i + 1).padStart(2, '0')
+      }));
 
     return {
       list: [yearList, monthList, dateList],
@@ -75,20 +79,22 @@ export default {
       }
 
       let days = new Date(year, month, 0).getDate();
-      let dateList = [...''.padEnd(days)].map((v, i) => ({
-        val: String(i + 1).padStart(2, '0')
-      }));
+      let dateList = Array(days)
+        .fill('')
+        .map((v, i) => ({
+          val: String(i + 1).padStart(2, '0')
+        }));
       this.list = [this.list[0], this.list[1], dateList];
     },
     handleCancel(res) {
-      this.$emit('cancel', res);
+      this.$emit('emitCancel', res);
     },
     handleConfirm(res) {
-      this.$emit('confirm', res);
+      this.$emit('emitConfirm', res);
     },
     handleOver(res) {
       let { which, val, bool } = res;
-      this.$emit('over', res);
+      this.$emit('emitOver', res);
 
       // 这步判断是必须的，防止获取不到数据报错
       if (!bool) {
@@ -97,9 +103,11 @@ export default {
 
       if (which !== 2) {
         let days = new Date(val[0], val[1], 0).getDate();
-        let dateList = [...''.padEnd(days)].map((v, i) => ({
-          val: String(i + 1).padStart(2, '0')
-        }));
+        let dateList = Array(days)
+          .fill('')
+          .map((v, i) => ({
+            val: String(i + 1).padStart(2, '0')
+          }));
         this.list = [this.list[0], this.list[1], dateList];
 
         if (days < val[2]) {
@@ -108,7 +116,7 @@ export default {
       }
     },
     handleInit(res) {
-      this.$emit('init', res);
+      this.$emit('emitInit', res);
     }
   }
 };

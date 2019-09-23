@@ -1,5 +1,5 @@
 <template>
-  <LinkageBase :cancelText="cancelText" :confirmText="confirmText" :list="list" :initVal="initVal" @cancel="handleCancel" @confirm="handleConfirm" @over="handleOver" @init="handleInit" :isShow="isShow"></LinkageBase>
+  <LinkageBase :cancelText="cancelText" :confirmText="confirmText" :list="list" :initVal="initVal" @emitCancel="handleCancel" @emitConfirm="handleConfirm" @emitOver="handleOver" @emitInit="handleInit" :isShow="isShow"></LinkageBase>
 </template>
 
 <script>
@@ -29,15 +29,21 @@ export default {
     }
   },
   data() {
-    let hourList = [...''.padEnd(24)].map((v, i) => ({
-      val: String(i).padStart(2, '0')
-    }));
-    let minuteList = [...''.padEnd(60)].map((v, i) => ({
-      val: String(i).padStart(2, '0')
-    }));
-    let secondList = [...''.padEnd(60)].map((v, i) => ({
-      val: String(i).padStart(2, '0')
-    }));
+    let hourList = Array(24)
+      .fill('')
+      .map((v, i) => ({
+        val: String(i).padStart(2, '0')
+      }));
+    let minuteList = Array(60)
+      .fill('')
+      .map((v, i) => ({
+        val: String(i).padStart(2, '0')
+      }));
+    let secondList = Array(60)
+      .fill('')
+      .map((v, i) => ({
+        val: String(i).padStart(2, '0')
+      }));
 
     return {
       list: [hourList, minuteList, secondList]
@@ -45,16 +51,16 @@ export default {
   },
   methods: {
     handleCancel(res) {
-      this.$emit('cancel', res);
+      this.$emit('emitCancel', res);
     },
     handleConfirm(res) {
-      this.$emit('confirm', res);
+      this.$emit('emitConfirm', res);
     },
     handleOver(res) {
-      this.$emit('over', res);
+      this.$emit('emitOver', res);
     },
     handleInit(res) {
-      this.$emit('init', res);
+      this.$emit('emitInit', res);
     }
   }
 };

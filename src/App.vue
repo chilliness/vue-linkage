@@ -12,25 +12,25 @@
       <input class="input" type="text" v-model="base" />
       <div class="btn" @click="baseFlag = true">自定义选择</div>
     </div>
-    <LinkageBase @cancel="baseFlag = false" @confirm="handleConfirm(arguments, 'base')" :isShow="baseFlag"></LinkageBase>
+    <LinkageBase @emitCancel="baseFlag = false" @emitConfirm="handleConfirm(arguments, 'base')" :isShow="baseFlag"></LinkageBase>
     <!-- 时间选择 -->
     <div class="input-box">
       <input class="input" type="text" v-model="time" />
       <div class="btn" @click="timeFlag = true">时间选择</div>
     </div>
-    <LinkageTime cancelText="cancel" confirmText="confirm" @cancel="timeFlag = false" @confirm="handleConfirm(arguments, 'time', ':')" :isShow="timeFlag"></LinkageTime>
+    <LinkageTime cancelText="cancel" confirmText="confirm" @emitCancel="timeFlag = false" @emitConfirm="handleConfirm(arguments, 'time', ':')" :isShow="timeFlag"></LinkageTime>
     <!-- 日期选择 -->
     <div class="input-box">
       <input class="input" type="text" v-model="date" />
       <div class="btn" @click="dateFlag = true">日期选择</div>
     </div>
-    <LinkageDate @cancel="dateFlag = false" @confirm="handleConfirm(arguments, 'date')" :isShow="dateFlag"></LinkageDate>
+    <LinkageDate @emitCancel="dateFlag = false" @emitConfirm="handleConfirm(arguments, 'date')" :isShow="dateFlag"></LinkageDate>
     <!-- 地址选择 -->
     <div class="input-box">
       <input class="input" type="text" v-model="addr" />
       <div class="btn" @click="addrFlag = true">地址选择</div>
     </div>
-    <LinkageAddr :initVal="['海南省', '三亚市', '天涯区']" @cancel="addrFlag = false" @confirm="handleConfirm(arguments, 'addr')" :isShow="addrFlag"></LinkageAddr>
+    <LinkageAddr :initVal="['海南省', '三亚市', '天涯区']" @emitCancel="addrFlag = false" @emitConfirm="handleConfirm(arguments, 'addr')" :isShow="addrFlag"></LinkageAddr>
   </div>
 </template>
 

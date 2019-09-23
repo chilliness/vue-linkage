@@ -7,7 +7,7 @@
         <div class="btn btn-submit" @click="handleConfirm">{{confirmText}}</div>
       </div>
       <div class="list-outer">
-        <div class="list-inner" ref="listInner">
+        <div class="list-inner" ref="listInnerRef">
           <div class="list-box" :style="{width: 100 / list.length + '%'}" v-for="(item, index) in list" :key="index" @touchstart="handleStart(index, $event)" @touchmove="handleMove" @touchend="handleEnd" @touchcancel="handleEnd">
             <div class="item-box" :data-val="_item.val" v-for="(_item, _index) in item" :key="index + '-' +_index">{{_item.val}}</div>
           </div>
@@ -80,12 +80,12 @@ export default {
         throw Error('初始化失败，请核对数据有效性');
       }
 
-      [...this.$refs.listInner.children].forEach((item, index) => {
+      [...this.$refs.listInnerRef.children].forEach((item, index) => {
         let val = -css(item.children[0], 'height') * aPos[index];
         css(item, 'translateY', val);
       });
 
-      this.$emit('init', { index: aPos, _: 'index-初始化索引' });
+      this.$emit('emitInit', { index: aPos, _: 'index-初始化索引' });
     },
     handleCssPos() {
       if (!this.linkageVal.length) {
@@ -96,7 +96,7 @@ export default {
         item.findIndex(obj => obj.val === this.linkageVal[index])
       );
 
-      [...this.$refs.listInner.children].forEach((item, index) => {
+      [...this.$refs.listInnerRef.children].forEach((item, index) => {
         let val = aPos[index];
         if (val !== -1) {
           css(item, 'translateY', -css(item.children[0], 'height') * val);
@@ -112,7 +112,7 @@ export default {
       touch.init = true;
       touch.lastTime = now;
       touch.elIndex = elIndex;
-      touch.el = this.$refs.listInner.children[elIndex];
+      touch.el = this.$refs.listInnerRef.children[elIndex];
       touch.diffY = 0;
       touch.startY = e.changedTouches[0].pageY;
       touch.oldVal = css(touch.el, 'translateY');
@@ -157,7 +157,7 @@ export default {
         target: { translateY: targetY },
         type: 'easeOut',
         time: 100,
-        callBack: () => this.$emit('over', this.handleResult(touch.elIndex))
+        callBack: () => this.$emit('emitOver', this.handleResult(touch.elIndex))
       });
     },
     handleResult(elIndex = -1) {
@@ -169,7 +169,7 @@ export default {
         _: 'bool-是否正常,index-最终索引,meta-最终数据,val-最终结果'
       };
 
-      [...this.$refs.listInner.children].forEach((item, index) => {
+      [...this.$refs.listInnerRef.children].forEach((item, index) => {
         let msg = '警告:心急吃不了热豆腐';
         let children = item.children;
         let nowIndex = Math.abs(
@@ -195,10 +195,10 @@ export default {
       return obj;
     },
     handleConfirm() {
-      this.$emit('confirm', this.handleResult());
+      this.$emit('emitConfirm', this.handleResult());
     },
     handleCancel() {
-      this.$emit('cancel', this.handleResult());
+      this.$emit('emitCancel', this.handleResult());
     },
     handlePrevent(e) {
       e.preventDefault();

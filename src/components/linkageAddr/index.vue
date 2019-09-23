@@ -1,5 +1,5 @@
 <template>
-  <LinkageBase :cancelText="cancelText" :confirmText="confirmText" :list="list" :initVal="initVal" :linkageVal="linkageVal" @cancel="handleCancel" @confirm="handleConfirm" @over="handleOver" @init="handleInit" :isShow="isShow"></LinkageBase>
+  <LinkageBase :cancelText="cancelText" :confirmText="confirmText" :list="list" :initVal="initVal" :linkageVal="linkageVal" @emitCancel="handleCancel" @emitConfirm="handleConfirm" @emitOver="handleOver" @emitInit="handleInit" :isShow="isShow"></LinkageBase>
 </template>
 
 <script>
@@ -64,15 +64,15 @@ export default {
       this.list = [provList, oProv.pro_cities, oCity.city_areas];
     },
     handleCancel(res) {
-      this.$emit('cancel', res);
+      this.$emit('emitCancel', res);
     },
     handleConfirm(res) {
-      this.$emit('confirm', res);
+      this.$emit('emitConfirm', res);
     },
     handleOver(res) {
       let { which, meta, index, bool } = res;
       let str = String(index);
-      this.$emit('over', res);
+      this.$emit('emitOver', res);
 
       // 这步判断是必须的，防止获取不到数据报错
       if (!bool) {
@@ -103,7 +103,7 @@ export default {
     },
     handleInit(res) {
       this.lastIndex = String(res.index);
-      this.$emit('init', res);
+      this.$emit('emitInit', res);
     }
   }
 };
