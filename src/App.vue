@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="home-wrap">
+  <div class="home-wrap">
     <div class="img-box">
       <img
         class="img"
@@ -12,60 +12,78 @@
       <input class="input" type="text" v-model="base" />
       <div class="btn" @click="baseFlag = true">自定义选择</div>
     </div>
-    <LinkageBase @emitCancel="baseFlag = false" @emitConfirm="handleConfirm(arguments, 'base')" :isShow="baseFlag"></LinkageBase>
+    <tag-linkage-base
+      @handleClose="handleClose($event, 'base')"
+      v-show="baseFlag"
+    />
     <!-- 时间选择 -->
     <div class="input-box">
       <input class="input" type="text" v-model="time" />
       <div class="btn" @click="timeFlag = true">时间选择</div>
     </div>
-    <LinkageTime cancelText="cancel" confirmText="confirm" @emitCancel="timeFlag = false" @emitConfirm="handleConfirm(arguments, 'time', ':')" :isShow="timeFlag"></LinkageTime>
+    <tag-linkage-time
+      textCancel="cancel"
+      textConfirm="confirm"
+      @handleClose="handleClose($event, 'time', ':')"
+      v-show="timeFlag"
+    />
     <!-- 日期选择 -->
     <div class="input-box">
       <input class="input" type="text" v-model="date" />
       <div class="btn" @click="dateFlag = true">日期选择</div>
     </div>
-    <LinkageDate @emitCancel="dateFlag = false" @emitConfirm="handleConfirm(arguments, 'date')" :isShow="dateFlag"></LinkageDate>
+    <tag-linkage-date
+      @handleClose="handleClose($event, 'date')"
+      v-show="dateFlag"
+    />
     <!-- 地址选择 -->
     <div class="input-box">
       <input class="input" type="text" v-model="addr" />
       <div class="btn" @click="addrFlag = true">地址选择</div>
     </div>
-    <LinkageAddr :initVal="['海南省', '三亚市', '天涯区']" @emitCancel="addrFlag = false" @emitConfirm="handleConfirm(arguments, 'addr')" :isShow="addrFlag"></LinkageAddr>
+    <tag-linkage-addr
+      :initVal="['海南省', '三亚市', '天涯区']"
+      @handleClose="handleClose($event, 'addr')"
+      v-show="addrFlag"
+    />
   </div>
 </template>
 
 <script>
-import {
-  LinkageBase,
-  LinkageTime,
-  LinkageDate,
-  LinkageAddr
-} from '@/components';
+import { toRefs, reactive } from "vue";
+import TagLinkageTime from "@/components/tag-linkage-time";
+import TagLinkageDate from "@/components/tag-linkage-date";
+import TagLinkageAddr from "@/components/tag-linkage-addr";
 
 export default {
-  name: 'Home',
-  components: { LinkageBase, LinkageTime, LinkageDate, LinkageAddr },
-  data() {
-    return {
-      base: '',
-      baseFlag: false,
-      time: '',
-      timeFlag: false,
-      date: '',
-      dateFlag: false,
-      addr: '',
-      addrFlag: false
-    };
+  name: "Home",
+  components: {
+    TagLinkageTime,
+    TagLinkageDate,
+    TagLinkageAddr,
   },
-  methods: {
-    handleConfirm(args, type, divide = '-') {
-      let { val, bool } = args[0];
-      if (bool) {
-        this[type] = val.join(divide);
-        this[`${type}Flag`] = false;
+  setup(props, { emit }) {
+    let vm = reactive({
+      base: "",
+      baseFlag: false,
+      time: "",
+      timeFlag: false,
+      date: "",
+      dateFlag: false,
+      addr: "",
+      addrFlag: false,
+    });
+
+    vm.handleClose = ({ btn, meta, flag }, which, sign = "-") => {
+      vm[`${which}Flag`] = false;
+      if (btn && flag) {
+        let arr = meta.reduce((prev, { val }) => prev.concat(val), []);
+        vm[which] = arr.join(sign);
       }
-    }
-  }
+    };
+
+    return { ...toRefs(vm) };
+  },
 };
 </script>
 
@@ -98,7 +116,7 @@ export default {
     padding-left: 10px;
     border: 1px solid #ccc;
     &:before {
-      content: '';
+      content: "";
       position: absolute;
       left: 0;
       top: 0;

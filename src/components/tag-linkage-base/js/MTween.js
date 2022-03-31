@@ -43,7 +43,13 @@ let Tween = {
     } else {
       s = (p / (2 * Math.PI)) * Math.asin(c / a);
     }
-    return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin(((t * d - s) * (2 * Math.PI)) / p)) + b;
+    return (
+      -(
+        a *
+        Math.pow(2, 10 * (t -= 1)) *
+        Math.sin(((t * d - s) * (2 * Math.PI)) / p)
+      ) + b
+    );
   },
   elasticOut(t, b, c, d, a, p) {
     let s;
@@ -62,7 +68,11 @@ let Tween = {
     } else {
       s = (p / (2 * Math.PI)) * Math.asin(c / a);
     }
-    return a * Math.pow(2, -10 * t) * Math.sin(((t * d - s) * (2 * Math.PI)) / p) + c + b;
+    return (
+      a * Math.pow(2, -10 * t) * Math.sin(((t * d - s) * (2 * Math.PI)) / p) +
+      c +
+      b
+    );
   },
   elasticBoth(t, b, c, d, a, p) {
     let s;
@@ -82,24 +92,37 @@ let Tween = {
       s = (p / (2 * Math.PI)) * Math.asin(c / a);
     }
     if (t < 1) {
-      return -0.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin(((t * d - s) * (2 * Math.PI)) / p)) + b;
+      return (
+        -0.5 *
+          (a *
+            Math.pow(2, 10 * (t -= 1)) *
+            Math.sin(((t * d - s) * (2 * Math.PI)) / p)) +
+        b
+      );
     }
-    return a * Math.pow(2, -10 * (t -= 1)) * Math.sin(((t * d - s) * (2 * Math.PI)) / p) * 0.5 + c + b;
+    return (
+      a *
+        Math.pow(2, -10 * (t -= 1)) *
+        Math.sin(((t * d - s) * (2 * Math.PI)) / p) *
+        0.5 +
+      c +
+      b
+    );
   },
   backIn(t, b, c, d, s) {
-    if (typeof s === 'undefined') {
+    if (typeof s === "undefined") {
       s = 1.70158;
     }
     return c * (t /= d) * t * ((s + 1) * t - s) + b;
   },
   backOut(t, b, c, d, s) {
-    if (typeof s === 'undefined') {
+    if (typeof s === "undefined") {
       s = 2.70158; // 回缩的距离
     }
     return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
   },
   backBoth(t, b, c, d, s) {
-    if (typeof s === 'undefined') {
+    if (typeof s === "undefined") {
       s = 1.70158;
     }
     if ((t /= d / 2) < 1) {
@@ -108,7 +131,7 @@ let Tween = {
     return (c / 2) * ((t -= 2) * t * (((s *= 1.525) + 1) * t + s) + 2) + b;
   },
   bounceIn(t, b, c, d) {
-    return c - Tween['bounceOut'](d - t, 0, c, d) + b;
+    return c - Tween["bounceOut"](d - t, 0, c, d) + b;
   },
   bounceOut(t, b, c, d) {
     if ((t /= d) < 1 / 2.75) {
@@ -122,9 +145,9 @@ let Tween = {
   },
   bounceBoth(t, b, c, d) {
     if (t < d / 2) {
-      return Tween['bounceIn'](t * 2, 0, c, d) * 0.5 + b;
+      return Tween["bounceIn"](t * 2, 0, c, d) * 0.5 + b;
     }
-    return Tween['bounceOut'](t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
+    return Tween["bounceOut"](t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
   }
 };
 
@@ -132,12 +155,12 @@ export function cssTransform(el, attr, val) {
   if (!el.transform) {
     el.transform = {};
   }
-  if (typeof val === 'undefined') {
-    if (typeof el.transform[attr] === 'undefined') {
+  if (typeof val === "undefined") {
+    if (typeof el.transform[attr] === "undefined") {
       switch (attr) {
-        case 'scale':
-        case 'scaleX':
-        case 'scaleY':
+        case "scale":
+        case "scaleX":
+        case "scaleY":
           el.transform[attr] = 100;
           break;
         default:
@@ -146,27 +169,27 @@ export function cssTransform(el, attr, val) {
     }
     return el.transform[attr];
   } else {
-    let transformVal = '';
+    let transformVal = "";
     el.transform[attr] = Number(val);
     for (let s in el.transform) {
       switch (s) {
-        case 'rotate':
-        case 'rotateX':
-        case 'rotateY':
-        case 'rotateZ':
-        case 'skewX':
-        case 'skewY':
-          transformVal += ' ' + s + '(' + el.transform[s] + 'deg)';
+        case "rotate":
+        case "rotateX":
+        case "rotateY":
+        case "rotateZ":
+        case "skewX":
+        case "skewY":
+          transformVal += " " + s + "(" + el.transform[s] + "deg)";
           break;
-        case 'translateX':
-        case 'translateY':
-        case 'translateZ':
-          transformVal += ' ' + s + '(' + el.transform[s] + 'px)';
+        case "translateX":
+        case "translateY":
+        case "translateZ":
+          transformVal += " " + s + "(" + el.transform[s] + "px)";
           break;
-        case 'scale':
-        case 'scaleX':
-        case 'scaleY':
-          transformVal += ' ' + s + '(' + el.transform[s] / 100 + ')';
+        case "scale":
+        case "scaleX":
+        case "scaleY":
+          transformVal += " " + s + "(" + el.transform[s] / 100 + ")";
           break;
       }
     }
@@ -175,20 +198,35 @@ export function cssTransform(el, attr, val) {
 }
 
 export function css(el, attr, val) {
-  if (['rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'skewX', 'skewY', 'translateX', 'translateY', 'translateZ'].includes(attr)) {
+  if (
+    [
+      "rotate",
+      "rotateX",
+      "rotateY",
+      "rotateZ",
+      "scale",
+      "scaleX",
+      "scaleY",
+      "skewX",
+      "skewY",
+      "translateX",
+      "translateY",
+      "translateZ"
+    ].includes(attr)
+  ) {
     return cssTransform(el, attr, val);
   }
   if (arguments.length === 2) {
     let val = getComputedStyle(el)[attr];
-    if (attr === 'opacity') {
+    if (attr === "opacity") {
       val = Math.round(val * 100);
     }
     return parseFloat(val);
   }
-  if (attr === 'opacity') {
+  if (attr === "opacity") {
     el.style.opacity = val / 100;
   } else {
-    el.style[attr] = val + 'px';
+    el.style[attr] = val + "px";
   }
 }
 

@@ -1,8 +1,9 @@
-import Vue from 'vue';
-import App from './App.vue';
+import { createApp } from "vue";
+import App from "./App.vue";
+import TagLinkageBase from "@/components/tag-linkage-base";
 
-Vue.config.productionTip = false;
+let app = createApp(App);
 
-new Vue({
-  render: h => h(App)
-}).$mount('#app');
+app.component("tag-linkage-base", TagLinkageBase);
+
+app.mount("#app");

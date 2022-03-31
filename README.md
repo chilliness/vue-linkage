@@ -33,15 +33,15 @@
 ``` bash
 1、CSS代码使用Scss编写
 
-2、本组件是针对移动端开发的，主要解决『移动端』联动问题
+2、本组件是针对移动端开发的，但PC端亦可使用
 
 3、所有数据和组件均在src/components文件夹下，以文件夹划分
 
-4、基础组件为linkageBase，可根据此组件个性化定制符合需求的组件
+4、基础组件为tag-linkage-base，可根据此组件个性化定制符合需求的组件
 
 5、如需使用本项目提供的『时间、日期、省市区』联动组件，请参考本项目代码
 
-6、个性化定制时，请在『事件回调内容bool为true』时再做处理，不包含初始化事件
+6、个性化定制时，请在『事件回调内容flag为true』时再做处理，不包含初始化事件
 
 7、初始化事件回调『只发生在有初始化且初始化成功的前提下』，并返回带有字段说明的对象
 
@@ -63,11 +63,6 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
-```
-
-### Run your tests
-```
-npm run test
 ```
 
 ### Lints and fixes files
